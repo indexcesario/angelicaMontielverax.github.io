@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angélica Montiel | Asesora Inmobiliaria | Inmobiliaria Verax</title>
+    <meta name="description" content="Perfil exclusivo de Angélica Montiel, asesora inmobiliaria senior en Inmobiliaria Verax. Compra, venta y alquiler de inmuebles de alto nivel.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Hoja de Estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="locked">
+
+    <!-- CAPA DE FONDO CON DEGRADADO VINOTINTO/DORADO EDITABLE -->
+    <div id="main-background" class="main-background">
+        <div class="bg-overlay"></div>
+        <button id="btn-edit-bg" class="btn-edit-photo admin-only hidden btn-edit-bg-pos">
+            <i class="fa-solid fa-image"></i> Cambiar Fondo General
+        </button>
+    </div>
+
+    <!-- MODAL DE ACCESO OBLIGATORIO (REGISTRO PREVIO CLIENTE) -->
+    <div id="auth-modal" class="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-header">
+                <span class="auth-brand">INMOBILIARIA VERAX</span>
+                <h2>Acceso Exclusivo al Portal</h2>
+                <div class="stroke-text-container" data-stroke-text="Angélica Montiel"></div>
+                <p>Por favor, ingresa tus datos para acceder a la experiencia personalizada con nuestra asesora.</p>
+            </div>
+            <form id="auth-form" class="auth-form">
+                <div class="form-group">
+                    <label for="user-name"><i class="fa-solid fa-user"></i> Nombre Completo</label>
+                    <input type="text" id="user-name" required placeholder="Ej. Carlos Mendoza">
+                </div>
+                <div class="form-group">
+                    <label for="user-dob"><i class="fa-solid fa-calendar"></i> Fecha de Nacimiento</label>
+                    <input type="date" id="user-dob" required>
+                </div>
+                <button type="submit" class="btn-auth">Ingresar al Portal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE AUTENTICACIÓN ADMINISTRADOR -->
+    <div id="admin-auth-modal" class="modal-overlay hidden">
+        <div class="auth-card">
+            <button id="close-admin-modal" class="close-modal-btn">&times;</button>
+            <div class="auth-header">
+                <span class="auth-brand">PANEL DE CONTROL</span>
+                <h2>Modo Administrador</h2>
+                <p>Ingresa tu clave maestra para modificar las fotos, textos y precios de la página.</p>
+            </div>
+            <form id="admin-form" class="auth-form">
+                <div class="form-group">
+                    <label for="admin-pass"><i class="fa-solid fa-key"></i> Contraseña Maestra</label>
+                    <input type="password" id="admin-pass" required placeholder="••••••••">
+                </div>
+                <p id="admin-error" class="error-text hidden">Contraseña incorrecta. Inténtalo de nuevo.</p>
+                <button type="submit" class="btn-auth">Activar Modo Edición</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE VIDEO DE INTRODUCCIÓN / CIERRE DE TRATO -->
+    <div id="intro-video-overlay" class="video-overlay hidden">
+        <div class="video-container-wrapper">
+            <video id="closing-video" autoplay muted playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-real-estate-agent-showing-a-house-to-a-client-41581-large.mp4" type="video/mp4">
+                Tu navegador no soporta videos HTML5.
+            </video>
+            <div class="video-caption">
+                <span class="gold-subtitle">Inmobiliaria Verax</span>
+                <h2>Cerrando Tratos de Confianza</h2>
+                <p>Bienvenido/a, <span id="welcome-user-name"></span>. Tu experiencia inmobiliaria junto a</p>
+                <div class="stroke-text-container center-stroke" data-stroke-text="Angélica Montiel"></div>
+                <p>comienza ahora.</p>
+                <button id="skip-video-btn" class="btn btn-primary" style="margin-top: 1rem;">Continuar al Perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DEL CARROUSEL 3D (DEPTH CAROUSEL) -->
+    <div id="property-modal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <button id="close-modal-btn" class="close-modal-btn" aria-label="Cerrar Galería">&times;</button>
+            <div class="modal-header">
+                <h3 id="modal-property-title">Galería de la Propiedad</h3>
+                <p id="modal-property-location"><i class="fa-solid fa-location-dot"></i> San Cristóbal, Táchira</p>
+                <button id="btn-edit-gallery-imgs" class="btn-edit-photo admin-only hidden">
+                    <i class="fa-solid fa-images"></i> Editar Fotos de la Galería
+                </button>
+            </div>
+            
+            <!-- Contenedor del Depth Carousel -->
+            <div class="depth-carousel-wrapper">
+                <div id="depth-carousel" class="depth-carousel-stage"></div>
+                <button id="prev-slide" class="carousel-nav-btn prev"><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="next-slide" class="carousel-nav-btn next"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <div class="modal-footer">
+                <span id="modal-property-price" class="modal-price">$0</span>
+                <a id="modal-whatsapp-link" href="#" target="_blank" class="btn btn-primary">
+                    <i class="fa-brands fa-whatsapp"></i> Consultar Disponibilidad
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Barra de Navegación -->
+    <header id="main-header">
+        <div class="nav-container">
+            <div class="brand-logo">
+                <span class="brand-name">VERAX</span>
+                <span class="brand-sub">Inmobiliaria</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#about" class="nav-link">Perfil</a>
+                <a href="#catalog" class="nav-link">Catálogo</a>
+                <a href="#services" class="nav-link">Especialidad</a>
+                <a href="#contact" class="nav-link btn-nav-contact">Contacto</a>
+                <button id="open-admin-btn" class="btn-admin-nav" title="Modo Administrador">
+                    <i class="fa-solid fa-lock"></i>
+                </button>
+            </nav>
+            <div class="hamburger" id="hamburger-btn" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú Móvil Desplegable -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about" class="mobile-link">Perfil</a>
+        <a href="#catalog" class="mobile-link">Catálogo</a>
+        <a href="#services" class="mobile-link">Especialidad</a>
+        <a href="#contact" class="mobile-link">Contacto</a>
+        <button id="open-admin-btn-mobile" class="btn-admin-mobile">
+            <i class="fa-solid fa-lock"></i> Modo Administrador
+        </button>
+    </div>
+
+    <!-- BARRA INDICADORA DE MODO EDICIÓN ACTIVO -->
+    <div id="admin-bar" class="admin-bar hidden">
+        <span><i class="fa-solid fa-pen-to-square"></i> MODO EDICIÓN ADMINISTRADOR ACTIVO</span>
+        <button id="close-admin-mode" class="btn-close-admin">Salir del Modo Edición</button>
+    </div>
+
+    <main>
+        <!-- Sección Hero / Perfil Principal -->
+        <section class="hero-section" id="about">
+            <div class="hero-content fade-in">
+                <div class="badge-brand">
+                    <i class="fa-solid fa-award"></i> Asesoría Inmobiliaria de Élite
+                </div>
+                
+                <div class="stroke-text-container hero-stroke" data-stroke-text="Angélica Montiel"></div>
+
+                <p class="hero-subtitle">Estratega Inmobiliaria Senior</p>
+                <p class="hero-description">
+                    Transformo transacciones inmobiliarias en inversiones altamente rentables y seguras. Con el respaldo de <strong>Inmobiliaria Verax</strong>, garantizo un acompañamiento discreto, ético y de máxima categoría para proteger tu patrimonio.
+                </p>
+                <div class="hero-actions">
+                    <a href="https://wa.me/584147544303?text=Hola%20Ang%C3%A9lica,%20estoy%20interesado/a%20en%20tus%20servicios%20inmobiliarios." 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="btn btn-primary">
+                        <i class="fa-brands fa-whatsapp"></i> Agendar Asesoría
+                    </a>
+                    <a href="#catalog" class="btn btn-secondary">
+                        Ver Propiedades
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper fade-in">
+                <div class="image-frame" id="hero-img-container">
+                    <div class="profile-placeholder-img" id="hero-img-box">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span>Angélica Montiel</span>
+                    </div>
+                    <button id="btn-edit-hero-img" class="btn-edit-photo admin-only hidden">
+                        <i class="fa-solid fa-camera"></i> Cambiar Foto
+                    </button>
+                </div>
+                <div class="experience-badge">
+                    <span class="exp-number">100%</span>
+                    <span class="exp-text">Excelencia y Resultados</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE CATÁLOGO CON PANEL DE BÚSQUEDA -->
+        <section class="catalog-section" id="catalog">
+            <div class="section-header fade-in">
+                <h2>Portafolio Inmobiliario</h2>
+                <div class="gold-divider"></div>
+                <p>Explora nuestras propiedades exclusivas</p>
+            </div>
+
+            <!-- Panel de Búsqueda y Filtrado -->
+            <div class="search-panel fade-in">
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Buscar por ubicación o características...">
+                </div>
+                <div class="filter-group">
+                    <select id="filter-type">
+                        <option value="all">Todos los tipos</option>
+                        <option value="casa">Casas</option>
+                        <option value="apartamento">Apartamentos</option>
+                        <option value="comercial">Locales / Comercial</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grid de Propiedades -->
+            <div class="properties-grid" id="properties-grid">
+                <!-- Tarjeta 1 -->
+                <div class="property-card fade-in" data-id="1" data-type="casa" data-location="san cristobal">
+                    <div class="property-img-wrapper" id="prop-img-wrapper-1">
+                        <span class="property-tag">En Venta</span>
+                        <div class="property-img-placeholder"><i class="fa-solid fa-house-chimney"></i></div>
+                        <button class="btn-edit-photo admin-only hidden btn-edit-card-img" data-prop-id="1">
+                            <i class="fa-solid fa-camera"></i> Cambiar Foto
+                        </button>
+                    </div>
+                    <div class="property-body">
+                        <div class="prop-title-row">
+                            <h3 id="prop-title-1">Residencia Exclusiva Villa Magna</h3>
+                            <button class="btn-edit-text admin-only hidden" data-edit-type="title" data-prop-id="1"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> San Cristóbal, Táchira</p>
+                        <div class="prop-desc-row">
+                            <p class="property-details" id="prop-desc-1">4 Habitaciones | 3 Baños | 2 Puestos de estacionamiento con acabados de lujo.</p>
+                            <button class="btn-edit-text admin-only hidden" data-edit-type="desc" data-prop-id="1"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <div class="property-footer">
+                            <div class="prop-price-row">
+                                <span class="property-price" id="prop-price-1">$120,000</span>
+                                <button class="btn-edit-text admin-only hidden" data-edit-type="price" data-prop-id="1"><i class="fa-solid fa-pen"></i></button>
+                            </div>
+                            <button class="btn-property open-gallery-btn">Ver Fotos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="property-card fade-in" data-id="2" data-type="apartamento" data-location="sanjose">
+                    <div class="property-img-wrapper" id="prop-img-wrapper-2">
+                        <span class="property-tag">Alquiler</span>
+                        <div class="property-img-placeholder"><i class="fa-solid fa-building"></i></div>
+                        <button class="btn-edit-photo admin-only hidden btn-edit-card-img" data-prop-id="2">
+                            <i class="fa-solid fa-camera"></i> Cambiar Foto
+                        </button>
+                    </div>
+                    <div class="property-body">
+                        <div class="prop-title-row">
+                            <h3 id="prop-title-2">Penthouse Ejecutivo Altamira</h3>
+                            <button class="btn-edit-text admin-only hidden" data-edit-type="title" data-prop-id="2"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Sector Comercial, San Cristóbal</p>
+                        <div class="prop-desc-row">
+                            <p class="property-details" id="prop-desc-2">3 Habitaciones | 2 Baños | Vista panorámica insuperable y seguridad privada.</p>
+                            <button class="btn-edit-text admin-only hidden" data-edit-type="desc" data-prop-id="2"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <div class="property-footer">
+                            <div class="prop-price-row">
+                                <span class="property-price" id="prop-price-2">$650 / mes</span>
+                                <button class="btn-edit-text admin-only hidden" data-edit-type="price" data-prop-id="2"><i class="fa-solid fa-pen"></i></button>
+                            </div>
+                            <button class="btn-property open-gallery-btn">Ver Fotos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="property-card fade-in" data-id="3" data-type="comercial" data-location="centro">
+                    <div class="property-img-wrapper" id="prop-img-wrapper-3">
+                        <span class="property-tag">En Venta</span>
+                        <div class="property-img-placeholder"><i class="fa-solid fa-store"></i></div>
+                        <button class="btn-edit-photo admin-only hidden btn-edit-card-img" data-prop-id="3">
+                            <i class="fa-solid fa-camera"></i> Cambiar Foto
+                        </button>
+                    </div>
+                    <div class="property-body">
+                        <div class="prop-title-row">
+                            <h3 id="prop-title-3">Local Comercial Plaza Central</h3>
+                            <button class="btn-edit-text admin-only hidden" data-edit-type="title" data-prop-id="3"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <p class="property-location"><i class="fa-solid fa-location-dot"></i> Centro, San Cristóbal</p>
+                        <div class="prop-desc-row">
+                            <p class="property-details" id="prop-desc-3">Amplio espacio a pie de calle con alto flujo peatonal y excelente proyección comercial.</p>
+                            <button class="btn-edit-text admin-only hidden" data-edit-type="desc" data-prop-id="3"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <div class="property-footer">
+                            <div class="prop-price-row">
+                                <span class="property-price" id="prop-price-3">$85,000</span>
+                                <button class="btn-edit-text admin-only hidden" data-edit-type="price" data-prop-id="3"><i class="fa-solid fa-pen"></i></button>
+                            </div>
+                            <button class="btn-property open-gallery-btn">Ver Fotos</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANNER DE BÚSQUEDA PERSONALIZADA -->
+            <div class="custom-search-banner fade-in">
+                <div class="banner-content">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                    <div>
+                        <h3>¿No encuentras la opción perfecta en este catálogo?</h3>
+                        <p>Cada inversor es único. Si ninguna de las opciones anteriores se ajusta a lo que buscas, contáctame directamente y te ayudaré a encontrar exactamente el inmueble que se adapte a tus expectativas.</p>
+                    </div>
+                    <a href="https://wa.me/584147544303?text=Hola%20Ang%C3%A9lica,%20ninguna%20de%20las%20opciones%20actuales%20cubre%20lo%20que%20busco.%20%C2%BFPuedes%20ayudarme%20a%20encontrar%20m%C3%A1s%20alternativas?" target="_blank" class="btn btn-primary">
+                        <i class="fa-brands fa-whatsapp"></i> Buscar a Medida
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE SERVICIOS ADICIONALES -->
+        <section class="services-section" id="services">
+            <div class="section-header fade-in">
+                <h2>Servicios Inmobiliarios</h2>
+                <div class="gold-divider"></div>
+                <p>Estrategias profesionales para maximizar el valor de tus bienes raíces</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+                    <h3>Negociación Estratégica</h3>
+                    <p>Defensa firme de tus intereses financieros, logrando cierres exitosos con términos óptimos y justos en el mercado actual.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>Seguridad Jurídica</h3>
+                    <p>Revisión exhaustiva de documentación, contratos y normativas legales vigentes para blindar cada fase de la transacción.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                    <h3>Marketing Inmobiliario</h3>
+                    <p>Exposición de alto nivel para propiedades, maximizando el alcance con inversores altamente calificados y solventes.</p>
+                </div>
+            </div>
+
+            <!-- BANNER DE VENTA / ALQUILER -->
+            <div class="sell-rent-banner fade-in">
+                <div class="sell-rent-box">
+                    <i class="fa-solid fa-house-circle-check"></i>
+                    <h3>¿Quieres vender o alquilar tu propiedad con éxito?</h3>
+                    <p>Permíteme posicionar tu inmueble en el mercado con una estrategia publicitaria superior, valoración precisa y un filtro riguroso de prospectos calificados. ¡Hagamos negocio juntos!</p>
+                    <a href="https://wa.me/584147544303?text=Hola%20Ang%C3%A9lica,%20quiero%20vender%20o%20alquilar%20mi%20propiedad%20con%20tu%20asesoramiento." target="_blank" class="btn btn-primary">
+                        <i class="fa-brands fa-whatsapp"></i> Publicar mi Inmueble
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE CONTACTO -->
+        <section class="contact-section" id="contact">
+            <div class="contact-container fade-in">
+                <h2>Conectemos Directamente</h2>
+                <div class="gold-divider"></div>
+                <p>Estoy lista para atender tus requerimientos inmobiliarios de forma personalizada y confidencial.</p>
+                
+                <div class="contact-methods">
+                    <a href="https://wa.me/584147544303?text=Hola%20Ang%C3%A9lica,%20deseo%20asesoramiento%20inmobiliario%20profesional." 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="contact-card whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <div>
+                            <span>WhatsApp Directo</span>
+                            <strong>+58 414-7544303</strong>
+                        </div>
+                    </a>
+
+                    <a href="https://instagram.com/inmobiliariaverax" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="contact-card instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                        <div>
+                            <span>Instagram Oficial</span>
+                            <strong>@inmobiliariaverax</strong>
+                        </div>
+                    </a>
+
+                    <a href="https://tiktok.com/@inmobiliariaverax" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="contact-card tiktok">
+                        <i class="fa-brands fa-tiktok"></i>
+                        <div>
+                            <span>TikTok Inmobiliario</span>
+                            <strong>@inmobiliariaverax</strong>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 <strong>Inmobiliaria Verax</strong>. Todos los derechos reservados.</p>
+            <div class="footer-stroke-wrapper">
+                <span>Diseño y Desarrollo de Élite - </span>
+                <div class="stroke-text-container footer-stroke" data-stroke-text="Angélica Montiel"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Archivo JavaScript Modular -->
+    <script src="script.js"></script>
+</body>
+</html>
